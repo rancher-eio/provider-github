@@ -227,7 +227,7 @@ index 0000000..b1c6cf4
 +  forProvider:
 +    file: sample-file.txt
 +    content: |
-+      I am an crossplane 
++      I am an crossplane
 +      provider. This should be nice.
 +    commitMessage: "managed by crossplane provider"
 +    commitAuthor: "Crossplane Github Provider"
@@ -241,5 +241,38 @@ index 0000000..b1c6cf4
 +
 ```
 
+## Building Project After Adding New Resource
 
+- Clone the repo and it's submodules
+```
+  $ git clone git@github.com:rancher-eio/provider-github.git
+  $ git submodule update --init --recursive
+```
 
+- To add a new resource, [reference the section above](https://github.com/coopnorge/provider-github?tab=readme-ov-file#adding-resources) and the following files should be modified/created
+```
+  config/external_name.go
+  config/provider.go
+  internal/controller/zz_setup.go
+  config/{resourcename}/config.go
+```
+Run the following commands to generate the controller code and crds for the new resource:
+```
+  $ make generate.init
+  $ go generate ./apis
+```
+and then run the make command to build the image and extract the image from the resulting xpg file,tag and push:
+```
+  $ make
+  $ docker load <  /Users/ivan-clare/go/src/provider-github/new/provider-github/_output/xpkg/linux_amd64/provider-github-v0.4.0-dirty.xpkg
+  $ docker tag c37ce5a03589 rancherlabs/custom-provider-github:v0.0.1
+```
+
+You may have to create the _output directory:
+```
+mkdir -vp _output/bin
+```
+and to build with a specific go version, run it with env variable:
+```
+env GO_REQUIRED_VERSION=1.21 make
+```
