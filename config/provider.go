@@ -17,6 +17,7 @@ import (
 	"github.com/coopnorge/provider-github/config/repository"
 	"github.com/coopnorge/provider-github/config/repositoryfile"
 	"github.com/coopnorge/provider-github/config/team"
+	"github.com/coopnorge/provider-github/config/teammembership"
 	"github.com/coopnorge/provider-github/config/teamrepository"
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
@@ -49,6 +50,7 @@ func GetProvider() *ujconfig.Provider {
 		pullrequest.Configure,
 		team.Configure,
 		teamrepository.Configure,
+		teammembership.Configure,
 		defaultbranch.Configure,
 		branchprotection.Configure,
 		repositoryfile.Configure,
